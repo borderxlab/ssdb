@@ -21,6 +21,10 @@ int SSDBImpl::multi_set(const std::vector<Bytes> &kvs, int offset, char log_type
 			log_error("name too long! %s", hexmem(key.data(), key.size()).c_str());
 			return 0;
 		}
+		const int long_key_size_thresh = 200;
+		if (key.size() > long_key_size_thresh) {
+			log_info("name is very long! %s...", hexmem(key.data(), long_key_size_thresh).c_str());
+		} 
 		const Bytes &val = *(it + 1);
 		std::string buf = encode_kv_key(key);
 		binlogs->Put(buf, slice(val));
