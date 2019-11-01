@@ -8,6 +8,7 @@ found in the LICENSE file.
 
 static const int SSDB_SCORE_WIDTH		= 9;
 static const int SSDB_KEY_LEN_MAX		= 16*1024; // Twemproxy/nutcracker has a limit of 16k
+static const int SSDB_LONG_KEY_SIZE_THRESH      = 200; // longer than this would have warning
 
 class DataType{
 public:
