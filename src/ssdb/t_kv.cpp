@@ -22,7 +22,7 @@ int SSDBImpl::multi_set(const std::vector<Bytes> &kvs, int offset, char log_type
 			return 0;
 		}
 		if (key.size() > SSDB_LONG_KEY_SIZE_THRESH) {
-			log_info("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
+			log_debug("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
 		}
 		const Bytes &val = *(it + 1);
 		std::string buf = encode_kv_key(key);
@@ -67,7 +67,7 @@ int SSDBImpl::set(const Bytes &key, const Bytes &val, char log_type){
 		return -1;
 	}
 	if (key.size() > SSDB_LONG_KEY_SIZE_THRESH) {
-		log_info("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
+		log_debug("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
 	}
 
 	Transaction trans(binlogs);
@@ -94,7 +94,7 @@ int SSDBImpl::setnx(const Bytes &key, const Bytes &val, char log_type){
 		return -1;
 	}
 	if (key.size() > SSDB_LONG_KEY_SIZE_THRESH) {
-		log_info("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
+		log_debug("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
 	}
 	Transaction trans(binlogs);
 
@@ -125,7 +125,7 @@ int SSDBImpl::getset(const Bytes &key, std::string *val, const Bytes &newval, ch
 		return -1;
 	}
 	if (key.size() > SSDB_LONG_KEY_SIZE_THRESH) {
-		log_info("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
+		log_debug("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
 	}
 	Transaction trans(binlogs);
 
@@ -148,7 +148,7 @@ int SSDBImpl::del(const Bytes &key, char log_type){
 		return -1;
 	}
 	if (key.size() > SSDB_LONG_KEY_SIZE_THRESH) {
-		log_info("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
+		log_debug("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
 	}
 	Transaction trans(binlogs);
 
@@ -169,7 +169,7 @@ int SSDBImpl::incr(const Bytes &key, int64_t by, int64_t *new_val, char log_type
 		return -1;
 	}
 	if (key.size() > SSDB_LONG_KEY_SIZE_THRESH) {
-		log_info("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
+		log_debug("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
 	}
 	Transaction trans(binlogs);
 
@@ -252,7 +252,7 @@ int SSDBImpl::setbit(const Bytes &key, int bitoffset, int on, char log_type){
 		return -1;
 	}
 	if (key.size() > SSDB_LONG_KEY_SIZE_THRESH) {
-		log_info("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
+		log_debug("name is very long! %s...", hexmem(key.data(), SSDB_LONG_KEY_SIZE_THRESH).c_str());
 	}
 	Transaction trans(binlogs);
 	
