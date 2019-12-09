@@ -431,5 +431,64 @@ int bitcount(const char *p, int size){
 	}
 #endif
 
+#if __BYTE_ORDER__ == __ORDER_BIGGER_ENDIAN__
+	static inline
+	bool is_compile_as_big_endian(){
+		return true;
+	} 
+
+	static inline
+	uint64_t host_to_be(uint64_t v) (v)
+
+	static inline
+	uint64_t be_to_host(uint64_t v) (v)
+#else
+	static inline
+	bool is_compile_as_big_endian(){
+		return false;
+	}
+	static inline
+	uint32_t host_to_be(uint32_t v){
+		return (v >> 24) | ((v >> 8) & 0xff00) | ((v << 8) & 0xff0000) | (v << 24);
+	}
+
+	static inline
+	uint64_t host_to_be(uint64_t v){
+		uint32_t h = v >> 32;
+		uint32_t l = v & 0xffffffffull;
+		return host_to_be(h) | ((uint64_t)host_to_be(l) << 32);
+	}
+
+	static inline
+	uint32_t be_to_host(uint32_t v){
+		return host_to_be(v);
+	}
+
+	static inline
+	uint64_t be_to_host(uint64_t v){
+		uint32_t h = v >> 32;
+		uint32_t l = v & 0xffffffffull;
+		return be_to_host(h) | ((uint64_t)be_to_host(l) << 32);
+	}
+#endif
+
+// determine big or small endian at run-time
+static inline
+bool is_big_endian(void)
+{
+    union {
+        uint32_t i;
+        char c[4];
+    } bint = {0x01020304};
+
+    return bint.c[0] == 1; 
+}
+
+static inline
+bool check_endian_convert(){
+	uint64_t host_val = {0x0102030405060708};
+	uint64_t be = host_to_be(host_val);
+	return ((char *)(&be))[0] == 1 && ((char *)(&be))[7] == 8;
+}
 
 #endif

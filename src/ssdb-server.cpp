@@ -9,6 +9,7 @@ found in the LICENSE file.
 #include "ssdb/ssdb.h"
 #include "util/app.h"
 #include "serv.h"
+#include "util/strings.h"
 
 #define APP_NAME "ssdb-server"
 #define APP_VERSION SSDB_VERSION
@@ -94,7 +95,18 @@ void MyApplication::run(){
 	log_info("%s exit.", APP_NAME);
 }
 
+void test_endian(){
+	printf("Current runtime machine endian is %s\n", is_big_endian() ? "big" : "small");
+	printf("Current compile machine endian is %s\n", is_compile_as_big_endian() ? "big" : "small");
+
+	if (!check_endian_convert()) {
+		fprintf(stderr, "check_endian_convert failed2!\n");
+		exit(1);
+	}
+}
+
 int main(int argc, char **argv){
+	test_endian();
 	MyApplication app;
 	return app.main(argc, argv);
 }
