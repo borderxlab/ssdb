@@ -319,8 +319,15 @@ int proc_multi_set(NetworkServer *net, Link *link, const Request &req, Response 
 }
 
 int proc_multi_del(NetworkServer *net, Link *link, const Request &req, Response *resp){
-	resp->push_back("error");
-	resp->push_back("multi_del not support!");
+	SSDBServer *serv = (SSDBServer *)net->data;
+	CHECK_NUM_PARAMS(2);
+
+	int ret = serv->ssdb->multi_del(req, 1);
+	if (ret == -1) {
+		resp->push_back("error");
+	} else {
+		resp->reply_int(0, ret);
+	}
 	return 0;
 
 	/*
